@@ -27,12 +27,13 @@
   },
   "homepage": "https://github.com/ALMaclaine/svelte-koa-webpack-template#readme",
   "dependencies": {
-    "@almaclaine/mysql-utils": "^0.1.37",
+    "@almaclaine/mysql-utils": "^0.1.41",
     "@koa/router": "^10.0.0",
     "concurrently": "^5.3.0",
-    "koa": "^2.13.0",
+    "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-server": "^1.2.2",
-    "pdf-lib": "^1.16.0"
+    "pdf-lib": "^1.16.0",
+    "sql-tag-system-koa-route": "^0.0.20"
   }
 }

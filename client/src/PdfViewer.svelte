@@ -1,6 +1,6 @@
 <script>
     import {onMount} from 'svelte';
-    import {data, limit, page, viewerActive, fileIndex} from './stores.js';
+    import {data, viewerActive, fileIndex} from './stores.js';
 
     let dataLen;
     let activePdf;
@@ -12,7 +12,7 @@
     });
 
     function nextPage() {
-        if ($fileIndex == (dataLen - 1))
+        if ($fileIndex === (dataLen - 1))
             $fileIndex = 0;
         else
             $fileIndex++;
@@ -21,7 +21,7 @@
     }
 
     function prevPage() {
-        if ($fileIndex == 0)
+        if ($fileIndex === 0)
             $fileIndex = dataLen - 1;
         else
             $fileIndex--;
