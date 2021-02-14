@@ -1,16 +1,10 @@
-const koa = require('koa')
-const koaRouter = require('@koa/router')
+const {isMainProcess} = require('./src/utilities/utilities');
+const app = require('./src/index');
 
-const app = new koa()
-const router = new koaRouter()
+if (isMainProcess(__filename)) {
+  const port = process.argv[2] || 3001;
+  app.listen(port);
+  console.log('Starting app on port: ' + port);
+}
 
-router.get('/', (ctx) => {
-  ctx.body = {
-    data: 'success'
-  };
-})
-
-app.use(router.routes())
-  .use(router.allowedMethods())
-
-app.listen(3000, () => console.log('running on port 3000'))
+module.exports = app;
