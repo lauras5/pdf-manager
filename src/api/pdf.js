@@ -30,7 +30,7 @@ routes.post('/file', async (ctx) => {
     const pdfInfo = await getPdf(dbInfo, pdf_id);
     const newDoc = await PDFDocument.create();
     const pdf = await PDFDocument.load(await fs.readFile(pdfInfo.file_location))
-    const copiedPages = await newDoc.copyPages(pdf, JSON.parse(pages));
+    const copiedPages = await newDoc.copyPages(pdf, JSON.parse(pages).filter(e => e < pdf.getPageCount()));
     copiedPages.forEach(e => newDoc.addPage(e));
     const finalDoc = await newDoc.save();
     const docPath = path.join(process.env.HOME, 'pdf_data', 'children', `${pdfInfo.name}.child-${makeid(16)}.pdf`);
