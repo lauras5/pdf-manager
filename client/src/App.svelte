@@ -16,7 +16,7 @@
     }
 </script>
 
-{#if $viewerActive == true}
+{#if $viewerActive}
     <PdfViewer {...data}></PdfViewer>
 {:else}
     {#each $data as pdf, i}
