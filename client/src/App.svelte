@@ -4,7 +4,7 @@
     import PdfViewer from './PdfViewer.svelte';
 
     onMount(async () => {
-        const res = await fetch('/api');
+        const res = await fetch(`/api/pdf?limit=${$limit}&page=${$page}`);
         $data = await res.json();
 
         console.log($data)
@@ -21,9 +21,10 @@
 {:else}
     {#each $data as pdf, i}
         <li on:click={() => getPdfView(i)}>
-            <div>{pdf.name}</div>
-            <div>{pdf.size}</div>
-            <div>{pdf.file_location}</div>
+            <div>Name: {pdf.name}</div>
+            <div>Size: {pdf.size}MB</div>
+            <div>No. Pages: {pdf.pages}</div>
+            <div>Location: {pdf.file_location}</div>
         </li>
     {/each}
 {/if}
@@ -31,7 +32,7 @@
 <style>
     li {
         display:flex;
-        justify-content: space-between;
+        flex-direction: column;
         padding:5px;
         border:1px solid lightgrey;
     }
