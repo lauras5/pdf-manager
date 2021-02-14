@@ -31,6 +31,11 @@ async function addPdf(dbInfo, filePath){
     return res.insertId;
 }
 
+async function getPdf(dbInfo, pdf_id = '') {
+    const sql = `SELECT * FROM pdf WHERE pdf_id = ? LIMIT 1;`;
+    return (await execute(dbInfo, sql, [pdf_id]))[0];
+}
+
 async function getPdfs(dbInfo, page = 0, limit = 20) {
     const sql = `SELECT * FROM pdf LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
@@ -40,5 +45,6 @@ module.exports = {
     createDatabase,
     createPdfTable,
     addPdf,
-    getPdfs
+    getPdfs,
+    getPdf
 }
