@@ -5,16 +5,12 @@
     onMount(async () => {
         const res = await fetch('/api');
         $data = await res.json();
-        // console.log(data)
+        console.log(data)
     });
-
-    function getPdfView() {
-
-    }
 </script>
 
 {#each data as pdf}
-    <li on:click={getPdfView}>
+    <li>
         <div>pdf.name</div>
         <div>pdf.size</div>
         <div>pdf.pages</div>
