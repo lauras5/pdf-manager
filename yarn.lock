@@ -1334,20 +1334,20 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.7.tgz#e9c18a410e5ed7e12442a549fbd8afa767038d65"
   integrity sha512-U+MTEOO0AiDzxwFvoa4JVnMV6mZlJKk2sBLt90s7G0Gd0Mlknc7kxEn3nuDPNZRta7O2uy8oLcZLVT+4sqNZHQ==
 
-sql-tag-system-koa-route@^0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/sql-tag-system-koa-route/-/sql-tag-system-koa-route-0.0.20.tgz#1b2fdb4904fa3d6a22241999c44afb72d7db2c6a"
-  integrity sha512-R4/KKtUfOlnmUEVVtwBJJKKUJsYtoVxqTyRX+oNVfcfLDG+5ffpxV7DElTzVgL/mRVWA+LTADi6h26Rfh1di9g==
+sql-tag-system-koa-route@^0.0.27:
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/sql-tag-system-koa-route/-/sql-tag-system-koa-route-0.0.27.tgz#e19a9215344c9ea79059e116082cc11a5aed3f84"
+  integrity sha512-rTT3eGixqKDlBALjG6EFTLEr3pB7/QBs4z9ak7jZPO2dEc/R7fI+OXeXFOHPi97tIZ2kjVCYRyMrDstjcOsrNg==
   dependencies:
     "@almaclaine/koa-utils" "^0.0.26"
     "@koa/router" "^10.0.0"
     koa-compose "^4.1.0"
-    sql-tag-system "^0.0.20"
+    sql-tag-system "^0.0.26"
 
-sql-tag-system@^0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/sql-tag-system/-/sql-tag-system-0.0.20.tgz#847bf9221c69f8365b7dab9b039cfc39387244d9"
-  integrity sha512-6AgP4XjrhhryhXwfzU6nm2YYcPTjalB5i0BnDZar4+io8oDCZzkiq+TzYEdNIIWiiXfmZ356zeB1gUceQuzakA==
+sql-tag-system@^0.0.26:
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/sql-tag-system/-/sql-tag-system-0.0.26.tgz#f3a2cfb79bec3079453e403500e22bdee730b7b1"
+  integrity sha512-dvt87VuBiA/8PAGT7deJttihwSltUI0aZvPwDCg3diMyu0eXbnpzTov9LB4uNPDvKlPno34FjrcZrouFGBDpig==
   dependencies:
     "@almaclaine/general-utils" "^0.0.20"
     "@almaclaine/mysql-utils" "^0.1.41"
