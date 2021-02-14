@@ -2,52 +2,28 @@
     import {onMount} from 'svelte';
     import {data, limit, page} from './stores.js';
 
-    let dataLen;
-    let fileIndex = 0;
-    let activePdf;
-    let pdfTitle;
-
     onMount(async () => {
         const res = await fetch('/api');
         $data = await res.json();
-        console.log(data)
-        dataLen = data.data.length;
-        updatePage();
+        // console.log(data)
     });
 
-    function nextPage() {
-        if (fileIndex == (dataLen - 1))
-            fileIndex = 0;
-        else
-            fileIndex++;
+    function getPdfView() {
 
-        updatePage();
     }
-
-    function prevPage() {
-        if (fileIndex == 0)
-            fileIndex = dataLen - 1;
-        else
-            fileIndex--;
-
-        updatePage();
-    }
-
-    function updatePage() {
-        pdfTitle = data.data[fileIndex].pdf;
-        activePdf = data.data[fileIndex].file_location;
-    }
-
 </script>
 
+{#each data as pdf}
+    <li on:click={getPdfView}>
+        <div>pdf.name</div>
+        <div>pdf.size</div>
+        <div>pdf.pages</div>
+    </li>
+{/each}
+
 <style>
-    h1 {
-        color: purple;
+    li {
+        display:flex;
+        justify-content: space-between;
     }
 </style>
-
-<h1>Hello world!</h1>
-
-<iframe title={pdfTitle} src={activePdf} height="600px" width="100%"></iframe>
-<button on:click={prevPage}>Previous</button>
-<button on:click={nextPage}>Next</button>

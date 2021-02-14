@@ -1,19 +1,19 @@
 <script>
     import {onMount} from 'svelte';
-
-    let data = [];
+    import {data, limit, page} from './stores.js';
 
     onMount(async () => {
         const res = await fetch('/api');
-        data = await res.json();
+        $data = await res.json();
         console.log(data)
     });
 </script>
 
 {#each data as pdf}
     <li>
-        <div>pdf.pdf</div>
+        <div>pdf.name</div>
         <div>pdf.size</div>
+        <div>pdf.pages</div>
     </li>
 {/each}
 
