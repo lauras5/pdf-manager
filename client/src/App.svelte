@@ -1,7 +1,7 @@
 <script>
     import {onMount} from 'svelte';
+    import {data, limit, page} from './stores.js';
 
-    let data = [];
     let dataLen;
     let fileIndex = 0;
     let activePdf;
@@ -9,7 +9,7 @@
 
     onMount(async () => {
         const res = await fetch('/api');
-        data = await res.json();
+        $data = await res.json();
         console.log(data)
         dataLen = data.data.length;
         updatePage();
