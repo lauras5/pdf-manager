@@ -16,19 +16,29 @@ async function createPdfTable(dbInfo) {
         name VARCHAR(512) NOT NULL,
         pages INT NOT NULL,
         file_location VARCHAR(1024) NOT NULL,
-        PRIMARY KEY(pdf_id)
+        parent_id INT DEFAULT NULL,
+        PRIMARY KEY(pdf_id),
+        FOREIGN KEY (parent_id) REFERENCES pdf(pdf_id)
     );`
     await execute(dbInfo, createPdfTable);
 }
 
-async function addPdf(dbInfo, filePath){
+async function addPdf(dbInfo, filePath, parent = '') {
     const name = path.basename(filePath.replace('.pdf', ''));
-    const sql = `INSERT INTO pdf (size, name, pages, file_location) VALUES (?, ?, ?, ?)`;
+    let sql = `INSERT INTO pdf (size, name, pages, file_location`;
+    if (parent) {
+        sql += ', parent_id) VALUES (?, ?, ?, ?, ?);'
+    } else {
+        sql += ') VALUES (?, ?, ?, ?)';
+    }
     const size = fs.statSync(filePath).size;
     const pdfDoc = await PDFDocument.load(fs.readFileSync(filePath));
     const pages = pdfDoc.getPageCount();
-    const res = await execute(dbInfo, sql, [size, name, pages, filePath]);
-    return res.insertId;
+    if (parent) {
+        return (await execute(dbInfo, sql, [size, name, pages, filePath, parent])).insertId;
+    } else {
+        return (await execute(dbInfo, sql, [size, name, pages, filePath])).insertId;
+    }
 }
 
 async function getPdf(dbInfo, pdf_id = '') {
@@ -41,10 +51,16 @@ async function getPdfs(dbInfo, page = 0, limit = 20) {
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
+async function getChildrenPdfs(dbInfo, parent_id, page = 0, limit = 20) {
+    const sql = `SELECT * FROM pdf WHERE parent_id = ? LIMIT ? OFFSET ?;`;
+    return (await execute(dbInfo, sql, [parent_id, limit, (page * limit)]));
+}
+
 module.exports = {
     createDatabase,
     createPdfTable,
     addPdf,
     getPdfs,
-    getPdf
+    getPdf,
+    getChildrenPdfs
 }
