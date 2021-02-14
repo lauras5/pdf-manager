@@ -10,4 +10,3 @@ for(const route of routes) {
 }
 
 export default api;
-å

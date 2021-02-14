@@ -34,20 +34,17 @@
     }
 
     function updatePage() {
-        pdfTitle = data.data[fileIndex].pdf;
-        activePdf = data.data[fileIndex].file_location;
+        if (dataLen > 0) {
+            pdfTitle = data.data[fileIndex].pdf;
+            activePdf = data.data[fileIndex].file_location;
+        }
     }
-
 </script>
 
-<style>
-    h1 {
-        color: purple;
-    }
-</style>
-
-<h1>Hello world!</h1>
-
-<iframe title={pdfTitle} src={activePdf} height="600px" width="100%"></iframe>
-<button on:click={prevPage}>Previous</button>
-<button on:click={nextPage}>Next</button>
+{#if dataLen > 0}
+    <iframe title={pdfTitle} src={activePdf} height="600px" width="100%"></iframe>
+    <button on:click={prevPage}>Previous</button>
+    <button on:click={nextPage}>Next</button>
+{:else}
+    <span>No PDFs Available</span>
+{/if}
