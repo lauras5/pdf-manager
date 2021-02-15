@@ -47,29 +47,23 @@ async function getPdf(dbInfo, pdf_id = '') {
     return (await execute(dbInfo, sql, [pdf_id]))[0];
 }
 
-async function listPdfs(dbInfo, reverse = false,  page = 0, limit = 20) {
-    console.log(reverse);
-    const sql = `SELECT * FROM pdf LIMIT ? OFFSET ? ORDER BY ${reverse ? 'DESC' : 'ASC'};`;
+async function listPdfsByName(dbInfo, order = 'ASC', page = 0, limit = 20) {
+    const sql = `SELECT * FROM pdf ORDER BY name ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
-async function listPdfsByName(dbInfo, reverse = false, page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf LIMIT ? OFFSET ? ORDER BY name ${reverse ? 'DESC' : 'ASC'};`;
+async function listPdfsByPage(dbInfo, order = 'ASC', page = 0, limit = 20) {
+    const sql = `SELECT * FROM pdf ORDER BY page ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
-async function listPdfsByPage(dbInfo, reverse = false, page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf LIMIT ? OFFSET ? ORDER BY page ${reverse ? 'DESC' : 'ASC'};`;
+async function listPdfsBySize(dbInfo, order = 'ASC', page = 0, limit = 20) {
+    const sql = `SELECT * FROM pdf ORDER BY size ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
-async function listPdfsBySize(dbInfo, reverse = false, page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf LIMIT ? OFFSET ? ORDER BY size ${reverse ? 'DESC' : 'ASC'};`;
-    return (await execute(dbInfo, sql, [limit, (page * limit)]));
-}
-
-async function listPdfsByDateAdded(dbInfo, reverse = false, page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf LIMIT ? OFFSET ? ORDER BY date_added ${reverse ? 'DESC' : 'ASC'};`;
+async function listPdfsByDateAdded(dbInfo, order = 'ASC', page = 0, limit = 20) {
+    const sql = `SELECT * FROM pdf ORDER BY date_added ${order} LIMIT ? OFFSET ?`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
@@ -82,7 +76,10 @@ module.exports = {
     createDatabase,
     createPdfTable,
     addPdf,
-    listPdfs,
+    listPdfsByName,
+    listPdfsByPage,
+    listPdfsBySize,
+    listPdfsByDateAdded,
     getPdf,
     getChildrenPdfs
 }

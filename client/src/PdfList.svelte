@@ -7,7 +7,7 @@
     let data = [];
     $: {
         (async () => {
-            const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&reverse=true`);
+            const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=desc&order_by=size`);
             data = await res.json();
         })();
     }
