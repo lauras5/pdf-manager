@@ -47,23 +47,13 @@ async function getPdf(dbInfo, pdf_id = '') {
     return (await execute(dbInfo, sql, [pdf_id]))[0];
 }
 
-async function listPdfsByName(dbInfo, order = 'ASC', page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf ORDER BY name ${order} LIMIT ? OFFSET ?;`;
+async function listPdfs(dbInfo, type = 'name', order = 'ASC', page = 0, limit = 20) {
+    const sql = `SELECT * FROM pdf ORDER BY ${type} ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
-async function listPdfsByPage(dbInfo, order = 'ASC', page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf ORDER BY pages ${order} LIMIT ? OFFSET ?;`;
-    return (await execute(dbInfo, sql, [limit, (page * limit)]));
-}
-
-async function listPdfsBySize(dbInfo, order = 'ASC', page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf ORDER BY size ${order} LIMIT ? OFFSET ?;`;
-    return (await execute(dbInfo, sql, [limit, (page * limit)]));
-}
-
-async function listPdfsByDateAdded(dbInfo, order = 'ASC', page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf ORDER BY date_added ${order} LIMIT ? OFFSET ?`;
+async function searchPdfs(dbInfo, term = '', type = 'name', order = 'ASC', page = 0, limit = 20) {
+    const sql = `SELECT * FROM pdf WHERE name LIKE '%${term}%' ORDER BY ${type} ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
@@ -76,10 +66,8 @@ module.exports = {
     createDatabase,
     createPdfTable,
     addPdf,
-    listPdfsByName,
-    listPdfsByPage,
-    listPdfsBySize,
-    listPdfsByDateAdded,
+    listPdfs,
+    searchPdfs,
     getPdf,
     getChildrenPdfs
 }

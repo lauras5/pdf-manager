@@ -7,10 +7,10 @@
     let data = [];
     let order = 'desc';
     let orderedBy = 'name';
-
+    let term = '';
     $: {
         (async () => {
-            const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=desc&order_by=size`);
+            const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=desc&order_by=size&term=${term}`);
             data = await res.json();
         })();
     }
@@ -46,13 +46,17 @@
     Page
     <input type="number" bind:value={page}>
 </label>
+<label>
+    Search
+    <input type="text" bind:value={term}>
+</label>
 <div class="pdf-table-container">
     <table>
         <tr>
             <th on:click={()=>orderBy('name')}>Name</th>
             <th on:click={()=>orderBy('size')}>Size</th>
-            <th on:click={()=>orderBy('page')}>Pages</th>
-            <th on:click={()=>orderBy('date')}>Date</th>
+            <th on:click={()=>orderBy('pages')}>Pages</th>
+            <th on:click={()=>orderBy('date_added')}>Date</th>
         </tr>
         {#each data as pdf, i}
             <tr on:click={() => push(`/pdf?pdf_id=${pdf.pdf_id}`)}>

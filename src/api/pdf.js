@@ -5,24 +5,20 @@ const routes = new Router();
 const {PDFDocument} = require('pdf-lib');
 const {makeid} = require('../utilities/utilities');
 
-const {listPdfsBySize, listPdfsByDateAdded, listPdfsByPage, listPdfsByName, getPdf, addPdf, getChildrenPdfs} = require('../utilities/pdf-utilities');
+const {listPdfs, getPdf, addPdf, getChildrenPdfs, searchPdfs} = require('../utilities/pdf-utilities');
 const dbInfo = require('../dbInfo');
 
 routes.get('/', async (ctx) => {
-    const {page, limit, pdf_id, parent_id, order, order_by} = ctx.query;
+    const {page, limit, pdf_id, parent_id, order, order_by, term} = ctx.query;
     if (pdf_id) {
         ctx.body = await getPdf(dbInfo, pdf_id);
     } else if (parent_id) {
         ctx.body = await getChildrenPdfs(dbInfo, parent_id, page, limit);
     } else {
-        if (order_by === 'page') {
-            ctx.body = await listPdfsByPage(dbInfo, order, page, limit);
-        } else if (order_by === 'date') {
-            ctx.body = await listPdfsByDateAdded(dbInfo, order, page, limit);
-        } else if (order_by === 'size') {
-            ctx.body = await listPdfsBySize(dbInfo, order, page, limit);
+        if (term) {
+            ctx.body = await searchPdfs(dbInfo, term, order_by, order, page, limit);
         } else {
-            ctx.body = await listPdfsByName(dbInfo, order, page, limit);
+            ctx.body = await listPdfs(dbInfo, order_by, order, page, limit);
         }
     }
 });
