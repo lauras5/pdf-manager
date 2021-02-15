@@ -12,16 +12,17 @@
         let pageList = children.split(",");
 
         for (let page of pageList) {
-            page = parseInt(page.trim());
+            page = parseInt(page);
 
             if (page) {
                 try {
-                    let pdfId = await fetch(`/api/pdf/file?parent_id=${pdf_id}&pages=${page}`);
+                    await fetch(`/api/pdf/file?pdf_id=${pdf_id}&pages=${page}`);
                 } catch (err) {
                     console.log(err);
                 }
             }
         }
+
         children = '';
     }
 
