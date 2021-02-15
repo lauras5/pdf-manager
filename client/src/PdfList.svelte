@@ -1,28 +1,50 @@
 <script>
     import {onMount} from 'svelte';
-    import {data, limit, page} from './stores.js';
     import {push} from 'svelte-spa-router'
 
-    onMount(async () => {
-        const res = await fetch(`/api/pdf?limit=${$limit}&page=${$page}`);
-        $data = await res.json();
+    let limit = 20;
+    let page = 0;
+    let data = [];
+    $: {
+        (async () => {
+            const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&reverse=true`);
+            data = await res.json();
+        })();
+    }
+
+    onMount(() => {
+        document.body.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowLeft') {
+                if(page > 0) page--;
+            }
+            if(e.key === 'ArrowRight') {
+                page++;
+            }
+        });
     });
 </script>
-
+<label>
+    Results
+    <input type="number" bind:value={limit}>
+</label>
+<label>
+    Page
+    <input type="number" bind:value={page}>
+</label>
 <div class="pdf-table-container">
     <table>
         <tr>
             <th>Name</th>
             <th>Size</th>
             <th>Pages</th>
-            <th>Parent</th>
+            <th>Date</th>
         </tr>
-        {#each $data as pdf, i}
+        {#each data as pdf, i}
             <tr on:click={() => push(`/pdf?pdf_id=${pdf.pdf_id}`)}>
-                <td>Name: {pdf.name}</td>
-                <td>Size: {(pdf.size / 10 ** 6).toFixed(2)}MB</td>
-                <td>No. Pages: {pdf.pages}</td>
-                <td>{pdf.parent_id || ''}</td>
+                <td>{pdf.name}</td>
+                <td style="text-align: center;">{(pdf.size / 10 ** 6).toFixed(2)}MB</td>
+                <td style="text-align: center;">{pdf.pages}</td>
+                <td style="text-align: center;">{pdf.date_added.split('T')[0]}</td>
             </tr>
         {/each}
     </table>
@@ -47,11 +69,11 @@
     }
 
     tr:nth-child(odd) {
-        background-color: rgba(128,128,136, .2);
+        background-color: rgba(128, 128, 136, .2);
     }
 
     tr:hover {
-        background-color: rgba(136,128,128, .4);
+        background-color: rgba(136, 128, 128, .4);
     }
 
     .pdf-table-container {
@@ -61,7 +83,7 @@
     }
 
     table {
-        margin: 128px;
+        margin: 64px;
         width: 80vw;
         max-width: 1280px;
         border-spacing: 0;
