@@ -53,7 +53,7 @@ async function listPdfsByName(dbInfo, order = 'ASC', page = 0, limit = 20) {
 }
 
 async function listPdfsByPage(dbInfo, order = 'ASC', page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf ORDER BY page ${order} LIMIT ? OFFSET ?;`;
+    const sql = `SELECT * FROM pdf ORDER BY pages ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 

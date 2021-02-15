@@ -79,6 +79,11 @@
         font-family: Helvetica, serif;
     }
 
+    th:hover {
+        color:black;
+        background-color:white;
+    }
+
     td {
         padding: 8px;
     }
