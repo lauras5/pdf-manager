@@ -16,7 +16,7 @@
     }
 
     async function orderBy(type) {
-        if (order == 'desc' && orderedBy == type) {
+        if (order === 'desc' && orderedBy === type) {
             order = 'asc';
         } else {
             order = 'desc';
