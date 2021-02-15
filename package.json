@@ -34,7 +34,9 @@
     "koa-body": "^4.2.0",
     "koa-server": "^1.2.2",
     "pdf-lib": "^1.16.0",
+    "query-string": "^6.14.0",
     "sql-tag-system": "^0.0.26",
-    "sql-tag-system-koa-route": "^0.0.27"
+    "sql-tag-system-koa-route": "^0.0.27",
+    "svelte-spa-router": "^3.1.0"
   }
 }

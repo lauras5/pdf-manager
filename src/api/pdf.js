@@ -9,8 +9,10 @@ const {listPdfs, getPdf, addPdf, getChildrenPdfs} = require('../utilities/pdf-ut
 const dbInfo = require('../dbInfo');
 
 routes.get('/', async (ctx) => {
-    const {page, limit, parent_id} = ctx.query;
-    if (parent_id) {
+    const {page, limit, pdf_id, parent_id} = ctx.query;
+    if (pdf_id) {
+        ctx.body = await getPdf(dbInfo, pdf_id);
+    } else if (parent_id) {
         ctx.body = await getChildrenPdfs(dbInfo, parent_id, page, limit);
     } else {
         ctx.body = await listPdfs(dbInfo, page, limit);
