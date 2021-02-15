@@ -13,4 +13,11 @@
     });
 </script>
 
-<iframe title={title} src={`/api/pdf/file?pdf_id=${pdf_id}`} height="600px" width="100%"></iframe>
+<iframe title={title} src={`/api/pdf/file?pdf_id=${pdf_id}`}></iframe>
+
+<style>
+    iframe {
+        width: 100%;
+        height: 100%;
+    }
+</style>

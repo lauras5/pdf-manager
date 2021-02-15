@@ -1,6 +1,7 @@
 <script>
     import {onMount} from 'svelte';
     import {data, limit, page} from './stores.js';
+    import {push} from 'svelte-spa-router'
 
     onMount(async () => {
         const res = await fetch(`/api/pdf?limit=${$limit}&page=${$page}`);
@@ -17,7 +18,7 @@
             <th>Parent</th>
         </tr>
         {#each $data as pdf, i}
-            <tr on:click={() => getPdfView(pdf.pdf_id)}>
+            <tr on:click={() => push(`/pdf?pdf_id=${pdf.pdf_id}`)}>
                 <td>Name: {pdf.name}</td>
                 <td>Size: {(pdf.size / 10 ** 6).toFixed(2)}MB</td>
                 <td>No. Pages: {pdf.pages}</td>
