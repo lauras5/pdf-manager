@@ -5,11 +5,26 @@
     let limit = 20;
     let page = 0;
     let data = [];
+    let order = 'desc';
+    let orderedBy = 'name';
+
     $: {
         (async () => {
             const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=desc&order_by=size`);
             data = await res.json();
         })();
+    }
+
+    async function orderBy(type) {
+        if (order == 'desc' && orderedBy == type) {
+            order = 'asc';
+        } else {
+            order = 'desc';
+            orderedBy = type;
+        }
+
+        const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=${order}&order_by=${type}`);
+        data = await res.json();
     }
 
     onMount(() => {
@@ -34,10 +49,10 @@
 <div class="pdf-table-container">
     <table>
         <tr>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Pages</th>
-            <th>Date</th>
+            <th on:click={()=>orderBy('name')}>Name</th>
+            <th on:click={()=>orderBy('size')}>Size</th>
+            <th on:click={()=>orderBy('page')}>Pages</th>
+            <th on:click={()=>orderBy('date')}>Date</th>
         </tr>
         {#each data as pdf, i}
             <tr on:click={() => push(`/pdf?pdf_id=${pdf.pdf_id}`)}>
@@ -87,16 +102,5 @@
         width: 80vw;
         max-width: 1280px;
         border-spacing: 0;
-    }
-
-    li {
-        display: flex;
-        flex-direction: column;
-        padding: 5px;
-        border: 1px solid lightgrey;
-    }
-
-    li:hover {
-        background-color: lightgrey;
     }
 </style>
