@@ -23,7 +23,7 @@
             orderedBy = type;
         }
 
-        const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=${order}&order_by=${type}`);
+        const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=${order}&order_by=${type}&term=${term}`);
         data = await res.json();
     }
 
