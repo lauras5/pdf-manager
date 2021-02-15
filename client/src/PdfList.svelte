@@ -5,12 +5,12 @@
     let limit = 20;
     let page = 0;
     let data = [];
-    let order = 'desc';
+    let order = 'asc';
     let orderedBy = 'name';
     let term = '';
     $: {
         (async () => {
-            const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=desc&order_by=size&term=${term}`);
+            const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=${order}&order_by=${orderedBy}&term=${term}`);
             data = await res.json();
         })();
     }
@@ -23,7 +23,7 @@
             orderedBy = type;
         }
 
-        const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=${order}&order_by=${type}&term=${term}`);
+        const res = await fetch(`/api/pdf?limit=${limit}&page=${page}&order=${order}&order_by=${orderedBy()}&term=${term}`);
         data = await res.json();
     }
 
@@ -33,7 +33,9 @@
                 if(page > 0) page--;
             }
             if(e.key === 'ArrowRight') {
-                page++;
+                if(data.length === limit) {
+                    page++;
+                }
             }
         });
     });
