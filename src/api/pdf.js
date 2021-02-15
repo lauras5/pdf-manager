@@ -5,7 +5,7 @@ const routes = new Router();
 const {PDFDocument} = require('pdf-lib');
 const {makeid} = require('../utilities/utilities');
 
-const {getPdfs, getPdf, addPdf, getChildrenPdfs} = require('../utilities/pdf-utilities');
+const {listPdfs, getPdf, addPdf, getChildrenPdfs} = require('../utilities/pdf-utilities');
 const dbInfo = require('../dbInfo');
 
 routes.get('/', async (ctx) => {
@@ -13,7 +13,7 @@ routes.get('/', async (ctx) => {
     if (parent_id) {
         ctx.body = await getChildrenPdfs(dbInfo, parent_id, page, limit);
     } else {
-        ctx.body = await getPdfs(dbInfo, page, limit);
+        ctx.body = await listPdfs(dbInfo, page, limit);
     }
 });
 

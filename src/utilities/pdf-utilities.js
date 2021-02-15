@@ -17,7 +17,7 @@ async function createPdfTable(dbInfo) {
         name VARCHAR(512) NOT NULL,
         pages INT NOT NULL,
         file_location VARCHAR(1024) NOT NULL,
-        parent_id INT DEFAULT NULL,
+        parent_id VARCHAR(128) DEFAULT NULL,
         PRIMARY KEY(pdf_id),
         FOREIGN KEY (parent_id) REFERENCES pdf(pdf_id)
     );`
@@ -47,7 +47,7 @@ async function getPdf(dbInfo, pdf_id = '') {
     return (await execute(dbInfo, sql, [pdf_id]))[0];
 }
 
-async function getPdfs(dbInfo, page = 0, limit = 20) {
+async function listPdfs(dbInfo, page = 0, limit = 20) {
     const sql = `SELECT * FROM pdf LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
@@ -61,7 +61,7 @@ module.exports = {
     createDatabase,
     createPdfTable,
     addPdf,
-    getPdfs,
+    listPdfs,
     getPdf,
     getChildrenPdfs
 }
