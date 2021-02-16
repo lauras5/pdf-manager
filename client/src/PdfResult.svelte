@@ -11,6 +11,7 @@
             children = await res.json();
         })();
     }
+
     let open = false;
 
 </script>

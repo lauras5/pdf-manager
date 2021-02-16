@@ -2,11 +2,14 @@
     import {onMount} from 'svelte';
     import {querystring} from 'svelte-spa-router'
     import queryString from 'query-string';
+    import Tag from "./Tag.svelte";
 
     const {pdf_id} = queryString.parse($querystring);
 
     let title = '';
     let children = '';
+    let newTags = '';
+    let tags = [];
 
     async function handleAddChildren() {
         const pageList = children.split(",")
@@ -17,17 +20,47 @@
         children = '';
     }
 
+    async function getTags() {
+        const res = await fetch(`/api/tag/pdf?pdf_id=${pdf_id}`);
+        tags = await res.json();
+    }
+
+    async function handleAddTags() {
+        const tags = newTags.split(",")
+            .map(e => e.replace(/ $/, '').replace(/^ /, '')).join(',');
+        const res = await fetch(`/api/tag?tag=${tags}`, {method: 'POST'});
+        const newTagIds = await res.json();
+        await Promise.all(newTagIds.map(async e => await fetch(`/api/tag/pdf?tag_id=${e}&pdf_id=${pdf_id}`, {method: 'POST'})));
+        await getTags();
+        newTags = '';
+    }
+
     onMount(async () => {
         const res = await fetch(`/api/pdf?pdf_id=${pdf_id}`);
         title = (await res.json()).name;
+        await getTags();
     });
 
 </script>
 
-<label>
-    <input type="text" placeholder="separate pages by commas" bind:value={children}>
-    <button on:click={handleAddChildren}>Submit</button>
-</label>
+<div style="display: flex;">
+    <label>
+        <input type="text" placeholder="separate pages by commas" bind:value={children}>
+        <button on:click={handleAddChildren}>Submit</button>
+    </label>
+
+    <label>
+        <input type="text" placeholder="separate tags by commas" bind:value={newTags}>
+        <button on:click={handleAddTags}>Submit</button>
+    </label>
+</div>
+
+<div style="display: flex;">
+    {#each tags as tag}
+        <Tag tag_id={tag.tag_id}/>
+    {/each}
+</div>
+
 <iframe title={title} src={`/api/pdf/file?pdf_id=${pdf_id}`}></iframe>
 
 <style>
