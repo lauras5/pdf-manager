@@ -40,7 +40,11 @@
             }
         } else {
             displayTags = [];
-            await makeFilteredCall();
+            if (activeTags.length == 0) {
+                term = '';
+            } else {
+                await makeFilteredCall();
+            }
         }
     }
 
