@@ -44,7 +44,6 @@
     }
 
     async function searchByTag(tag) {
-
         if (activeTags.map(tag => tag.tag_id).indexOf(tag.tag_id) < 0) {
             activeTags = [...activeTags, tag];
         }
@@ -53,17 +52,17 @@
         displayTags.splice(removeIndex, 1)
         displayTags = [...displayTags];
 
-        makeFilteredCall(tag);
+        await makeFilteredCall(tag);
     }
 
-    function removeActiveTag(tag) {
+    async function removeActiveTag(tag) {
         let removeIndex = activeTags.map(tag => tag.tag_id)
             .indexOf(tag.tag_id);
         activeTags.splice(removeIndex, 1);
         activeTags = [...activeTags];
         displayTags = [...displayTags, tag];
 
-        makeFilteredCall();
+        await makeFilteredCall();
     }
 
     async function makeFilteredCall() {
