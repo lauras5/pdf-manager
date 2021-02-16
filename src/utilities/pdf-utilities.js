@@ -35,11 +35,13 @@ async function addPdf(dbInfo, filePath, parent = '') {
     const size = fs.statSync(filePath).size;
     const pdfDoc = await PDFDocument.load(fs.readFileSync(filePath));
     const pages = pdfDoc.getPageCount();
+    const id = makeid(128);
     if (parent) {
-        return (await execute(dbInfo, sql, [makeid(128), size, name, pages, filePath, parent])).insertId;
+        await execute(dbInfo, sql, [id, size, name, pages, filePath, parent]);
     } else {
-        return (await execute(dbInfo, sql, [makeid(128), size, name, pages, filePath])).insertId;
+        await execute(dbInfo, sql, [id, size, name, pages, filePath]);
     }
+    return id;
 }
 
 async function getPdf(dbInfo, pdf_id = '') {
