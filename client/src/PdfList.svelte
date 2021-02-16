@@ -31,7 +31,7 @@
         data = await res.json();
     }
 
-    function findTags() {
+    async function findTags() {
         if (term.length > 0) {
             for (let b of tags) {
                 if (b.tag.match(term) && activeTags.map(tag => tag.tag_id).indexOf(b.tag_id) < 0) {
@@ -40,6 +40,7 @@
             }
         } else {
             displayTags = [];
+            await makeFilteredCall();
         }
     }
 
@@ -52,7 +53,7 @@
         displayTags.splice(removeIndex, 1)
         displayTags = [...displayTags];
 
-        await makeFilteredCall(tag);
+        await makeFilteredCall();
     }
 
     async function removeActiveTag(tag) {
