@@ -48,12 +48,12 @@ async function getPdf(dbInfo, pdf_id = '') {
 }
 
 async function listPdfs(dbInfo, type = 'name', order = 'ASC', page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf ORDER BY ${type} ${order} LIMIT ? OFFSET ?;`;
+    const sql = `SELECT * FROM pdf WHERE parent_id IS NULL ORDER BY ${type} ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 
 async function searchPdfs(dbInfo, term = '', type = 'name', order = 'ASC', page = 0, limit = 20) {
-    const sql = `SELECT * FROM pdf WHERE name LIKE '%${term}%' ORDER BY ${type} ${order} LIMIT ? OFFSET ?;`;
+    const sql = `SELECT * FROM pdf WHERE name LIKE '%${term}%' AND parent_id IS NULL ORDER BY ${type} ${order} LIMIT ? OFFSET ?;`;
     return (await execute(dbInfo, sql, [limit, (page * limit)]));
 }
 

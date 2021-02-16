@@ -9,26 +9,17 @@
     let children = '';
 
     async function handleAddChildren() {
-        let pageList = children.split(",");
-
-        for (let page of pageList) {
-            page = parseInt(page);
-
-            if (page) {
-                try {
-                    await fetch(`/api/pdf/file?pdf_id=${pdf_id}&pages=${page}`);
-                } catch (err) {
-                    console.log(err);
-                }
-            }
-        }
-
+        const pageList = children.split(",")
+            .map(e => e.replace(/ $/, '').replace(/^ /, ''))
+            .map(e => parseInt(e))
+            .filter(e => !isNaN(e));
+        await fetch(`/api/pdf/file?pdf_id=${pdf_id}&pages=${JSON.stringify(pageList)}`, {method: 'POST'});
         children = '';
     }
 
     onMount(async () => {
-       const res = await fetch(`/api/pdf?pdf_id=${pdf_id}`);
-       title = (await res.json()).name;
+        const res = await fetch(`/api/pdf?pdf_id=${pdf_id}`);
+        title = (await res.json()).name;
     });
 
 </script>
