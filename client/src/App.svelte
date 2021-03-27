@@ -1,22 +1,18 @@
 <script>
-	import {onMount} from 'svelte';
+    import {onMount} from 'svelte';
+    import PdfList from './PdfList.svelte';
+    import PdfViewer from './PdfViewer.svelte'
+    import Router from 'svelte-spa-router'
 
-	let data = {};
+    const routes = {
+        // Exact path
+        '/': PdfList,
+        '/pdf': PdfViewer,
 
-	onMount(async () => {
-		const res = await fetch('/api');
-		data = await res.json();
-		console.log(data);
-	});
-
-
+        // Catch-all
+        // This is optional, but if present it must be the last
+        '*': PdfList
+    }
 </script>
 
-<style>
-	h1 {
-		color: purple;
-	}
-</style>
-
-<h1>Hello world!</h1>
-<div>Data: {JSON.stringify(data)}</div>
+<Router {routes}/>

@@ -1,18 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const FileType = require('file-type');
-const {addPdf} = require('../src/utilities/pdf-utilities');
-const {execute} = require("@almaclaine/mysql-utils");
+const {addPdf, createDatabase, createPdfTable} = require('../src/utilities/pdf-utilities');
 
-const dataPath = process.argv[2];
-const filePath = process.argv[3];
+const filePath = process.argv[2];
 
-if (!dataPath) throw new Error('Must pass valid data directory path as first parameter to pdf-uploader');
 if (!filePath) throw new Error('Must pass valid files directory path as second parameter to pdf-uploader');
 
 // Check and create data directory
 
-const resolvedDataPath = path.resolve(dataPath);
+const resolvedDataPath = path.resolve(process.env.HOME, 'pdf_data');
 if (fs.existsSync(resolvedDataPath)) {
     if (!fs.statSync(resolvedDataPath).isDirectory()) {
         throw new Error(`${resolvedDataPath} exists but is not a directory`);
@@ -26,6 +23,8 @@ if (fs.existsSync(resolvedDataPath)) {
     }
 }
 
+fs.mkdirSync(path.join(resolvedDataPath, 'children'));
+
 // Check file path directory exists
 
 const resolvedFilePath = path.resolve(filePath);
@@ -37,6 +36,15 @@ const directories = [resolvedFilePath];
 let files = [];
 
 (async () => {
+    const dbInfo = {
+        host: 'localhost',
+        user: 'root',
+        database: 'pdf_manager',
+        password: process.env.MYSQL_PW
+    }
+    await createDatabase(dbInfo);
+    await createPdfTable(dbInfo);
+
     while (directories.length > 0) {
         const tmpDir = directories.shift();
         files = fs.readdirSync(tmpDir);
@@ -57,12 +65,6 @@ let files = [];
                     console.log(`Loading File: ${newFilePath}`);
                     const data = fs.readFileSync(tmpPath);
                     fs.writeFileSync(newFilePath, data);
-                    const dbInfo = {
-                        host: 'localhost',
-                        user: 'root',
-                        database: 'pdf_manager',
-                        password: process.env.MYSQL_PW
-                    }
                     await addPdf(dbInfo, newFilePath);
                 }
             }
